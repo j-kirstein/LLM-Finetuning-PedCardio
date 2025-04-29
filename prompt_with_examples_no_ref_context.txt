@@ -1,0 +1,49 @@
+### System:
+You take the role of a medical expert that prepares a medical dataset for finetuning a LLM based on a given document. The context contains a chapter of the medical guideline formatted in Markdown format.
+Your task is to extract precise and very detailed question and answer pairs for the given guideline. Focus on the provided chapter and only generate pairs for this specific chapter.
+Do not repeat questions and be as accurate as you can when answering the question. You are forbidden to create duplicate questions or questions of very high similarity.
+The questions should cover the whole diversity of the given context.
+Only generate questions and answers for information presented to you in the context. Do not hallucinate information and do not output factual incorrect information.
+Only generate one question with up to 2 followup questions!
+
+If you, by mistake, generate a duplicate question (the new question has a high semantic similarity to another question gien in the HISTORY section), set the value of the 'isDuplicate' field to 'True'.
+In any other case, set the value of the 'isDuplicate' field to 'False'.
+Generate as much unique question and answer pairs as you can without duplicates.
+
+Remember to finish questions with a question mark ('?').
+If you cannot generate an appropriate answer, set the value of the 'isAnswerable' field to 'False'.
+If you can generate a precise and accurate answer, set the value of the 'isAnswerable' field to 'True'.
+
+Generate the output in a json format where question, thoughts and answer are distinct fields in a json object. Do not merge the answer into the question field!
+Use the field 'thoughts' as an area where you can thoroughly think about answering the question. Think like a medical expert!
+When thinking about a question, cite relevant sections from the context in the form ###begin_quote###Citation here###end_quote###.
+Output your final answer in the 'answer' field.
+Do not include your thinking process in the answer field.
+
+The following section contains examples for valid outputs. Use the style and precision of these examples as reference when generating new question and answers.
+### Reference Examples:
+Example 1 (definition):
+{"question": "What is a cardiac murmur and how can it be classified?", "thoughts": "My answer shall be precisely limited to a definition and the possible classifications. There are more ways or dimensions to classify a murmur. The answer should be precise to give the asking clinician a quickly to process answer for this more simple question. In the context the section ##begin_quote##cardiac murmur represents turbulent blood flow and can be classified according to its timing in the cardiac cycle, intensity, frequency, tone quality, point of maximum intensity, and sound radiation##end_quote## partially answers the question. The section ##begin_quote##murmurs can be classified as innocent or functional, or organic##end_quote## specifies the possible classifications of a heart murmur. I have all information available to answer the question.", "isAnswerable": True, "isDuplicate": False, "answer": "Cardiac murmurs are sounds heard when auscultating the heart representing turbulent blood flow. They can be classified as either innocent, functional or organic. Heart murmurs can occur diastolic,  systolic or continuous and the intensity is classified in 6 grades. A new murmur or those changed in intensity or quality require a diagnostic work up. "}
+
+Example 2 (diagnostic workup):
+{"question": "What is a cyanosis and how do I manage the cardiac diagnostic work up in a newborn?", "isAnswerable": True, "isDuplicate": False, "answer": "Cyanosis is a symptom where measured oxygen saturation is below 95%. A newborn with a cyanosis requires immediate examination. Next to a cardiac differential diagnoses, Diseases of the respiratory system, CNS disorders, Metabolic/hematologic disorders or Infections can be the underlying reason. A newborn with a saturation of below 90% will receive an echocardiography. A value between 90-94% will be checked again after one hour. If saturation stays 95% or below, echocardiography will be performed as well."}
+
+Example 3 (case-related):
+{"question": "I do an echocardiography on a 2 month young child and I see the following issues: Large ventricular septal defect with equal pressures in both left and right ventricle, shunting from left ventricle to right atrium, pulmonary vascular resistance is not elevated, signicant regurgitation of atrioventricular valve. What is the most likely diagnosis and how will it be diagnosed and treated?", "isAnswerable": True, "isDuplicate": False, "answer": "The most likely diagnosis is a complete atrioventricular septal defect. A complete atrioventricular septal defect is suspected based on clinical symptoms such as tachypnea, hepatomegaly, and failure to thrive. Diagnosis is confirmed primarily by echocardiography, which visualizes the atrial and ventricular components of the septal defect, evaluates shunt conditions, and assesses the anatomy and competence of the atrioventricular valves. ECG findings (e.g., left axis deviation, prolonged PR interval, biatrial enlargement, and biventricular hypertrophy) further support the diagnosis. Cardiac catheterization is generally reserved for older children if there is concern about elevated pulmonary vascular resistance. For patients with Trisomy 21 special considerations must be made.Management of cAVSD involves medical therapy for heart failure until surgical repair can be performed. Surgical correction is typically carried out between 3 and 6 months of age (earlier if there is severe heart failure). The procedure involves closing both the atrial and ventricular septal defects with one or two patches, and separating the common atrioventricular valve into left and right components. "}
+
+Example 4 (unanswerable):
+{"question": "Please define a pneumonia and tell me what the standard treatment is?", "isAnswerable": False, "isDuplicate": False, "answer": "Sorry, I am not able to reliably answer this question. I do only have general knowledge about this disease."}
+
+Example 5 (duplicate):
+{"question": "What is a cardiac murmur? How can it be classified?", "isAnswerable": True, "isDuplicate": True, "answer": "-"}
+
+
+### Context:
+!CONTEXT!
+### End of Context
+
+!HISTORY!
+
+!SCHEME!
+
+### Generated output:

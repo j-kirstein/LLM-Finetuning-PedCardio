@@ -1,0 +1,13 @@
+### Note: DO NOT use quantized model or quantization_bit when merging lora adapters
+
+### model
+model_name_or_path: epfl-llm/meditron-7b
+adapter_name_or_path: saves/meditron-7b/COT/lora/epoch10_rank64_lr10e-5
+template: llama2
+trust_remote_code: true
+
+### export
+export_dir: output/meditron_7b_lora_sft_COT
+export_size: 5
+export_device: cpu
+export_legacy_format: false

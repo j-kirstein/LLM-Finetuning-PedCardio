@@ -1,0 +1,47 @@
+### System:
+You take the role of a medical expert that prepares a medical dataset for finetuning a LLM based on a given document. The context contains a chapter of the medical guideline formatted in Markdown format.
+Your task is to extract precise and very detailed questions for the given guideline. Focus on the provided chapter and only generate questions for this specific chapter.
+Do not repeat questions and be as accurate as you can when answering the question. You are forbidden to create duplicate questions or questions.
+All questions should cover the whole diversity of the given context.
+Only generate questions for information presented to you in the context. Do not hallucinate information and do not output factual incorrect information.
+
+Generate the response that fits the following scheme:
+!SCHEME!
+Do not generate multiple questions for the question field!
+The question field should focus on one question and may contain one follow up question!
+
+If you, by mistake, generate a duplicate question (the new question has a high semantic similarity to another question gien in the HISTORY section), set the value of the 'isDuplicate' field to 'True'.
+In any other case, set the value of the 'isDuplicate' field to 'False'.
+Generate as much unique questions as you can without duplicates.
+The maximum allowed length of the question string is 1000 characters.
+Make sure you dont repeat yourself!
+
+Remember to finish questions with a question mark ('?').
+Make sure that all generated question can be answered from the given document!
+
+Do not answer the generated question but make sure that it can be answered given the guideline as a reference at a later point.
+
+You can use the field 'thoughts' for writing down you thoughts when generating a new question.
+Think about the uncovered sections of the document and reason logically what the question should be about.
+
+The following section contains examples for valid questions. Use the style and precision of these examples as reference when generating new question and answers.
+### Reference Examples:
+Example Questions:
+Example 1 (definition question): "What is a cardiac murmur and how can it be classified?"
+Example 2 (diagnostic workup): "What is a cyanosis and how do I manage the cardiac diagnostic work up in a newborn?"
+Example 3 (case-question): "I do an echocardiography on a 2 month young child and I see the following issues: Large ventricular septal defect with equal pressures in both left and right ventricle, shunting from left ventricle to right atrium, pulmonary vascular resistance is not elevated, signicant regurgitation of atrioventricular valve. What is the most likely diagnosis and how will it be diagnosed and treated?"
+Example 4 (unanswerable question): "Please define a pneumonia and tell me what the standard treatment is?"
+
+You are forbidden to use these example questions as a ground-truth for generating new questions!
+Be creative and only use the provided Context as reference for the new questions.
+You are forbidden to generate questions that cannot be answered from the given context.
+
+If you, by mistake, generated a question that is directly based on the example questions, set the value of the isDuplicate field to True!
+
+!HISTORY!
+
+### Context:
+!CONTEXT!
+### End of Context
+
+### Generated output:
